@@ -34,17 +34,12 @@ public class DefaultSpdySettingsFrame implements SpdySettingsFrame {
     }
 
     public boolean isSet(int id) {
-        Integer key = id;
-        return settingsMap.containsKey(key);
+        return settingsMap.containsKey(id);
     }
 
     public int getValue(int id) {
-        Integer key = id;
-        if (settingsMap.containsKey(key)) {
-            return settingsMap.get(key).getValue();
-        } else {
-            return -1;
-        }
+        final Setting setting = settingsMap.get(id);
+        return setting != null ? setting.getValue() : -1;
     }
 
     public void setValue(int id, int value) {
@@ -55,9 +50,9 @@ public class DefaultSpdySettingsFrame implements SpdySettingsFrame {
         if (id < 0 || id > SpdyCodecUtil.SPDY_SETTINGS_MAX_ID) {
             throw new IllegalArgumentException("Setting ID is not valid: " + id);
         }
-        Integer key = id;
-        if (settingsMap.containsKey(key)) {
-            Setting setting = settingsMap.get(key);
+        final Integer key = id;
+        final Setting setting = settingsMap.get(key);
+        if (setting != null) {
             setting.setValue(value);
             setting.setPersist(persistValue);
             setting.setPersisted(persisted);
@@ -67,41 +62,30 @@ public class DefaultSpdySettingsFrame implements SpdySettingsFrame {
     }
 
     public void removeValue(int id) {
-        Integer key = id;
-        if (settingsMap.containsKey(key)) {
-            settingsMap.remove(key);
-        }
+        settingsMap.remove(id);
     }
 
     public boolean isPersistValue(int id) {
-        Integer key = id;
-        if (settingsMap.containsKey(key)) {
-            return settingsMap.get(key).isPersist();
-        } else {
-            return false;
-        }
+        final Setting setting = settingsMap.get(id);
+        return setting != null && setting.isPersist();
     }
 
     public void setPersistValue(int id, boolean persistValue) {
-        Integer key = id;
-        if (settingsMap.containsKey(key)) {
-            settingsMap.get(key).setPersist(persistValue);
+        final Setting setting = settingsMap.get(id);
+        if (setting != null) {
+            setting.setPersist(persistValue);
         }
     }
 
     public boolean isPersisted(int id) {
-        Integer key = id;
-        if (settingsMap.containsKey(key)) {
-            return settingsMap.get(key).isPersisted();
-        } else {
-            return false;
-        }
+        final Setting setting = settingsMap.get(id);
+        return setting != null && setting.isPersisted();
     }
 
     public void setPersisted(int id, boolean persisted) {
-        Integer key = id;
-        if (settingsMap.containsKey(key)) {
-            settingsMap.get(key).setPersisted(persisted);
+        final Setting setting = settingsMap.get(id);
+        if (setting != null) {
+            setting.setPersisted(persisted);
         }
     }
 
